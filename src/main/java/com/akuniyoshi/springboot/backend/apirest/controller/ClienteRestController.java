@@ -31,6 +31,7 @@ public class ClienteRestController {
 		return clienteService.findAll();
 	}
 
+	
 	@GetMapping("/clients/{id}")
 	public Client show(@PathVariable Long id) {
 		return clienteService.findById(id);
