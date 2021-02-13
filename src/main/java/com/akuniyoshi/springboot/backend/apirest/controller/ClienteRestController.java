@@ -52,7 +52,6 @@ public class ClienteRestController {
 		currentClient.setName(client.getName());
 		currentClient.setLastName(client.getLastName());
 		currentClient.setEmail(client.getEmail());
-		currentClient.setCreateAd(client.getCreateAd());
 
 		clienteService.save(currentClient);
 

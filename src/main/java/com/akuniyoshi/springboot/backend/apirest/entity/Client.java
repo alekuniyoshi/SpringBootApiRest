@@ -35,7 +35,7 @@ public class Client implements Serializable {
 
 	@PrePersist
 	public void prePersist() {
-		createAd=new Date();
+		createAd = new Date();
 	}
 
 	public Long getId() {
