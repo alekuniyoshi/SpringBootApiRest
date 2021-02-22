@@ -1,9 +1,13 @@
 package com.akuniyoshi.springboot.backend.apirest.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,37 +35,99 @@ public class ClienteRestController {
 		return clienteService.findAll();
 	}
 
-	
 	@GetMapping("/clients/{id}")
-	public Client show(@PathVariable Long id) {
-		return clienteService.findById(id);
+	public ResponseEntity<?> show(@PathVariable Long id) {
+
+		Client client = null;
+		Map<String, Object> response = new HashMap<>();
+
+		try {
+
+			client = clienteService.findById(id);
+
+		} catch (DataAccessException e) {
+			response.put("message", "Database error");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+		if (client == null) {
+			response.put("error", "The client id:" + id + " " + "no exist in the DB");
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+		}
+
+		return new ResponseEntity<Client>(client, HttpStatus.OK);
 	}
 
 	@PostMapping("/clients")
-	@ResponseStatus(HttpStatus.CREATED)
-	public Client create(@RequestBody Client client) {
-		return clienteService.save(client);
+	public ResponseEntity<?> create(@RequestBody Client client) {
+
+		Client clientNew = new Client();
+		Map<String, Object> response = new HashMap<>();
+
+		try {
+
+			clientNew = clienteService.save(client);
+
+		} catch (DataAccessException e) {
+			response.put("mensaje", "Database error");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+		response.put("mensaje", "The client has created with successful");
+		response.put("cliente", clientNew);
+		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
 	}
 
 	@PutMapping("/clients/{id}")
-	@ResponseStatus(HttpStatus.CREATED)
-	public Client update(@PathVariable Long id, @RequestBody Client client) {
+	public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Client client) {
 
 		Client currentClient = clienteService.findById(id);
+
+		Map<String, Object> response = new HashMap<>();
+
+		if (currentClient == null) {
+			response.put("error", "The client id:" + id + " " + "no exist in the DB");
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+		}
 
 		currentClient.setName(client.getName());
 		currentClient.setLastName(client.getLastName());
 		currentClient.setEmail(client.getEmail());
 
-		clienteService.save(currentClient);
+		try {
 
-		return currentClient;
+			clienteService.save(currentClient);
+
+		} catch (DataAccessException e) {
+			response.put("mensaje", "Database error");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+		response.put("mensaje", "The client has updated with successful");
+		response.put("cliente", currentClient);
+		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
 	}
 
 	@DeleteMapping("/clients/{id}")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void delete(@PathVariable Long id) {
-		clienteService.delete(id);
+	public ResponseEntity<?> delete(@PathVariable Long id) {
+		
+		Map<String, Object> response = new HashMap<>();
+		
+		try {
+			
+			clienteService.delete(id);
+			
+		} catch (DataAccessException e) {
+			response.put("mensaje", "Database error");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+		response.put("mensaje", "The client has deleted with successful");
+		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 	}
 
 }

@@ -23,13 +23,15 @@ public class Client implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Column(nullable = false)
 	private String name;
 
 	private String lastName;
 
+	@Column(nullable = false, unique = true)
 	private String email;
 
-	@Column(name = "create_at")
+	@Column(name = "create_at")	
 	@Temporal(TemporalType.DATE)
 	private Date createAd;
 
