@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
@@ -16,9 +18,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.akuniyoshi.springboot.backend.apirest.SpringBootBackendApirestApplication;
 import com.akuniyoshi.springboot.backend.apirest.entity.Client;
 import com.akuniyoshi.springboot.backend.apirest.service.IClienteService;
 
@@ -26,6 +28,8 @@ import com.akuniyoshi.springboot.backend.apirest.service.IClienteService;
 @RestController
 @RequestMapping("/api")
 public class ClienteRestController {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(SpringBootBackendApirestApplication.class);
 
 	@Autowired
 	private IClienteService clienteService;
@@ -52,6 +56,7 @@ public class ClienteRestController {
 		}
 
 		if (client == null) {
+			LOGGER.error("The client id:" + id + " " + "no exist in the DB");
 			response.put("error", "The client id:" + id + " " + "no exist in the DB");
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
 		}
@@ -88,6 +93,7 @@ public class ClienteRestController {
 		Map<String, Object> response = new HashMap<>();
 
 		if (currentClient == null) {
+			LOGGER.error("error", "The client id:" + id + " " + "no exist in the DB");
 			response.put("error", "The client id:" + id + " " + "no exist in the DB");
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
 		}
@@ -113,13 +119,13 @@ public class ClienteRestController {
 
 	@DeleteMapping("/clients/{id}")
 	public ResponseEntity<?> delete(@PathVariable Long id) {
-		
+
 		Map<String, Object> response = new HashMap<>();
-		
+
 		try {
-			
+
 			clienteService.delete(id);
-			
+
 		} catch (DataAccessException e) {
 			response.put("mensaje", "Database error");
 			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
