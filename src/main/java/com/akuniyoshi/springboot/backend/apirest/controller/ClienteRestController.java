@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.akuniyoshi.springboot.backend.apirest.SpringBootBackendApirestApplication;
 import com.akuniyoshi.springboot.backend.apirest.entity.Client;
 import com.akuniyoshi.springboot.backend.apirest.service.IClienteService;
 
@@ -29,7 +28,7 @@ import com.akuniyoshi.springboot.backend.apirest.service.IClienteService;
 @RequestMapping("/api")
 public class ClienteRestController {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(SpringBootBackendApirestApplication.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ClienteRestController.class);
 
 	@Autowired
 	private IClienteService clienteService;
