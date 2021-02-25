@@ -127,6 +127,7 @@ public class ClienteRestController {
 			clienteService.delete(id);
 
 		} catch (DataAccessException e) {
+			LOGGER.error("error: " + e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
 			response.put("mensaje", "Database error");
 			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
