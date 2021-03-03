@@ -3,6 +3,9 @@ package com.akuniyoshi.springboot.backend.apirest.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -64,10 +68,25 @@ public class ClienteRestController {
 	}
 
 	@PostMapping("/clients")
-	public ResponseEntity<?> create(@RequestBody Client client) {
+	public ResponseEntity<?> create(@Valid @RequestBody Client client, BindingResult result) {
 
 		Client clientNew = new Client();
 		Map<String, Object> response = new HashMap<>();
+
+		if (result.hasErrors()) {
+//			List<String> errors = new ArrayList<>();
+//
+//			for (FieldError err : result.getFieldErrors()) {
+//				errors.add("The field " + err.getField() + "' " + err.getDefaultMessage());
+//			}
+
+			List<String> errors = result.getFieldErrors().stream()
+					.map(err -> "The field " + err.getField() + "' " + err.getDefaultMessage())
+					.collect(Collectors.toList());
+
+			response.put("errors", errors);
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
+		}
 
 		try {
 
@@ -85,11 +104,26 @@ public class ClienteRestController {
 	}
 
 	@PutMapping("/clients/{id}")
-	public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Client client) {
+	public ResponseEntity<?> update(@Valid @RequestBody Client client, BindingResult result, @PathVariable Long id) {
 
 		Client currentClient = clienteService.findById(id);
 
 		Map<String, Object> response = new HashMap<>();
+
+		if (result.hasErrors()) {
+//			List<String> errors = new ArrayList<>();
+//
+//			for (FieldError err : result.getFieldErrors()) {
+//				errors.add("The field " + err.getField() + "' " + err.getDefaultMessage());
+//			}
+
+			List<String> errors = result.getFieldErrors().stream()
+					.map(err -> "The field " + err.getField() + " " + err.getDefaultMessage())
+					.collect(Collectors.toList());
+
+			response.put("errors", errors);
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
+		}
 
 		if (currentClient == null) {
 			LOGGER.error("error", "The client id:" + id + " " + "no exist in the DB");
