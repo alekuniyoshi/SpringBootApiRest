@@ -11,6 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -40,6 +42,11 @@ public class ClienteRestController {
 	@GetMapping("/clients")
 	public List<Client> index() {
 		return clienteService.findAll();
+	}
+
+	@GetMapping("/clients/pages/{page}")
+	public Page<Client> index(@PathVariable Integer page) {
+		return clienteService.findAll(PageRequest.of(page, 4));
 	}
 
 	@GetMapping("/clients/{id}")

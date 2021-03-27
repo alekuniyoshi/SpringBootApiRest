@@ -21,5 +21,6 @@ public class SwaggerConfig {
 				.apis(RequestHandlerSelectors.basePackage("com.akuniyoshi.springboot.backend.apirest"))
 				.paths(PathSelectors.any()).build();
 	}
+	
 }
 	
