@@ -1,0 +1,12 @@
+09 Sep 2021 - 09:02:10.075 [RMI TCP Connection(675)-127.0.0.1] INFO  o.s.b.a.SpringApplicationAdminMXBeanRegistrar$SpringApplicationAdmin - Application shutdown requested.
+09 Sep 2021 - 09:02:10.115 [RMI TCP Connection(675)-127.0.0.1] INFO  o.s.s.c.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
+09 Sep 2021 - 09:02:10.118 [RMI TCP Connection(675)-127.0.0.1] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+09 Sep 2021 - 09:02:10.119 [RMI TCP Connection(675)-127.0.0.1] INFO  o.h.t.s.i.SchemaDropperImpl$DelayedDropActionImpl - HHH000477: Starting delayed evictData of schema as part of SessionFactory shut-down'
+09 Sep 2021 - 09:02:10.120 [RMI TCP Connection(675)-127.0.0.1] DEBUG org.hibernate.SQL - alter table usuarios_roles drop foreign key FK3say4n5o70d83i842ncv2l56x
+09 Sep 2021 - 09:02:10.181 [RMI TCP Connection(675)-127.0.0.1] DEBUG org.hibernate.SQL - alter table usuarios_roles drop foreign key FKqcxu02bqipxpr7cjyj9dmhwec
+09 Sep 2021 - 09:02:10.195 [RMI TCP Connection(675)-127.0.0.1] DEBUG org.hibernate.SQL - drop table if exists client
+09 Sep 2021 - 09:02:10.216 [RMI TCP Connection(675)-127.0.0.1] DEBUG org.hibernate.SQL - drop table if exists roles
+09 Sep 2021 - 09:02:10.232 [RMI TCP Connection(675)-127.0.0.1] DEBUG org.hibernate.SQL - drop table if exists usuarios
+09 Sep 2021 - 09:02:10.252 [RMI TCP Connection(675)-127.0.0.1] DEBUG org.hibernate.SQL - drop table if exists usuarios_roles
+09 Sep 2021 - 09:02:10.275 [RMI TCP Connection(675)-127.0.0.1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+09 Sep 2021 - 09:02:10.280 [RMI TCP Connection(675)-127.0.0.1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
